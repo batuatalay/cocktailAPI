@@ -1,0 +1,12 @@
+HELP.md
+**/application.properties
+build.sh
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+build/
+target/
