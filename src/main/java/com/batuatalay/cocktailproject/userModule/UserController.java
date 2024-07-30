@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @RestController
 
@@ -32,10 +34,13 @@ public class UserController {
     public String login(@RequestBody User user) {
         User currentUser = UserRepository.findByUsername(user.getUsername());
         if (currentUser != null && user.getPassword().equals(currentUser.getPassword())) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime expireDate = now.plus(1, ChronoUnit.HOURS);
             byte[] randomBytes = new byte[24];
             secureRandom.nextBytes(randomBytes);
             String authToken =  base64Encoder.encodeToString(randomBytes);
             currentUser.setAuthToken(authToken);
+            currentUser.setExpireDate(expireDate.toString());
             UserRepository.save(currentUser);
             return authToken;
         }
@@ -63,8 +68,18 @@ public class UserController {
     public boolean loginCheck(String authorizationHeader){
         String[] parseToken = authorizationHeader.split(" ");
         String token = parseToken[1];
-        if(UserRepository.findByauthToken(token) != null) {
-            return true;
+        User loggedInUser = UserRepository.findByauthToken(token);
+        LocalDateTime now = LocalDateTime.now();
+        if(loggedInUser != null) {
+            LocalDateTime expireDate = LocalDateTime.parse(loggedInUser.getExpireDate());
+            if(!expireDate.isAfter(now)){
+                loggedInUser.setAuthToken("");
+                loggedInUser.setExpireDate("");
+                UserRepository.save(loggedInUser);
+                return false;
+            } else {
+                return true;
+            }
         }else {
             return false;
         }

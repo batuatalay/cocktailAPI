@@ -12,6 +12,7 @@ public class User {
     private String password;
     private String authToken;
     private String status;
+    private String expireDate;
 
     public String getId() {
         return id;
@@ -47,6 +48,14 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(String expireDate) {
+        this.expireDate = expireDate;
     }
 
     public String toString(){
