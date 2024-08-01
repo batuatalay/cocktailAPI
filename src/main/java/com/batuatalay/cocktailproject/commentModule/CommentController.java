@@ -26,7 +26,7 @@ public class CommentController {
 
 
     @GetMapping()
-    public Object getAllComments(@RequestHeader("Authorization") String authorizationHeader){
+    public Object getAllComments(@RequestHeader("Authorization") String authorizationHeader) {
         Object returnData;
         if (userController.loginCheck(authorizationHeader)) {
             returnData = helperController.prepareReturn("200",commentRepository.findAll());
@@ -37,7 +37,7 @@ public class CommentController {
     }
 
     @GetMapping("/recipe/{recipe}")
-    public Object getAllCommentsByRecipeID(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("recipe") String recipe){
+    public Object getAllCommentsByRecipeID(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("recipe") String recipe)  {
         Object returnData;
         if (userController.loginCheck(authorizationHeader)) {
             Recipe currentRecipe = recipeRepository.findByCode(recipe);

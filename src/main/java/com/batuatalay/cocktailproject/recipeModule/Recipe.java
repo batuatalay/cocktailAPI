@@ -11,6 +11,7 @@ public class Recipe {
     private String id;
     private String name;
     private String code;
+    private String type;
 
     @Field("description")
     private List<String> description;
@@ -51,5 +52,13 @@ public class Recipe {
 
     public void setMaterials(List<String> materials) {
         this.materials = materials;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

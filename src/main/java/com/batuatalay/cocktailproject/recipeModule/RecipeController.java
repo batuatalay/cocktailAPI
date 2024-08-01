@@ -22,6 +22,11 @@ public class RecipeController {
     public Object getAll(@RequestHeader("Authorization") String authorizationHeader) {
         Object returnData;
         if(userController.loginCheck(authorizationHeader)) {
+            for (Recipe recipe : recipeRepository.findAll()) {
+                recipe.setType("66ab38adca817008958b167a");
+                recipeRepository.save(recipe);
+
+            }
             returnData = helperController.prepareReturn("200",recipeRepository.findAll());
         } else {
             returnData = helperController.prepareReturn("401","Unauthorized");
@@ -268,4 +273,5 @@ public class RecipeController {
         }
         return returnData;
     }
+
 }
